@@ -1,0 +1,4 @@
+{"query":{"bool":{"must":{"multi_match":{"query":"1","fields":["title_v3","desc"]}}}}}
+{"query":{"bool":{"must":{"multi_match":{"query":"1","fields":["title_v3","desc"]}}}}}
+{"query":{"bool":{"must":{"multi_match":{"query":"1","fields":["title_v3","desc"]}}}}}
+{"query":{"bool":{"must":{"multi_match":{"query":"1","fields":["title_v3","desc"]}}}}}

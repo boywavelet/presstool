@@ -1,0 +1,2 @@
+curl -XPOST search-wk-server20:28080/_search -d '{"query":"好 用 ","target":"note","type":"note","from":0,"size":0,"exp_list":[""]}'
+curl -XPOST search-wk-server20:28080/_search -d '{"query":"说 说 ","target":"note","type":"note","from":0,"size":0,"exp_list":[""]}'

@@ -1,0 +1,3 @@
+{"query": {"term" : {"user":"kimchy"} } }
+{"query": {"term" : {"user":"kimchy"} } }
+{"query": {"term" : {"user":"kimch"} } }

@@ -1,1 +1,4 @@
 {"query": {"term" : {"user":"kimchy"} } }
+{"query": {"term" : {"user":"kim2"} } }
+{"query": {"term" : {"user":"kim3"} } }
+{"query": {"term" : {"user":"kim4"} } }

@@ -14,7 +14,10 @@ public abstract class AbstractPressCall implements Callable<PressStat> {
 	protected List<String> queries;
 	protected int totalCycles;
 	protected int threshold;
-	public AbstractPressCall(RateLimiter limit, List<String> hosts, List<String> queries, int totalCycles, int threshold) {
+	public AbstractPressCall(
+			RateLimiter limit, 
+			List<String> hosts, List<String> queries, 
+			int totalCycles, int threshold) {
 		this.limit = limit;
 		this.hosts = hosts;
 		this.queries = queries;
@@ -24,7 +27,7 @@ public abstract class AbstractPressCall implements Callable<PressStat> {
 
 	@Override
 	public PressStat call() throws Exception {
-		PressStat stat = new PressStat(threshold);
+		PressStat stat = new PressStat(threshold, queries.size());
 		Random rand = new Random();
 		for (int i = 0; i < totalCycles; ++i) {
 			int startIndex = rand.nextInt(queries.size());
@@ -36,6 +39,7 @@ public abstract class AbstractPressCall implements Callable<PressStat> {
 				try {
 					makeCall(query);
 				} catch (Exception e) {
+					e.printStackTrace();
 					stat.collectFail();
 					continue;
 				}

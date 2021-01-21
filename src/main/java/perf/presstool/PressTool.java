@@ -5,6 +5,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -51,14 +52,26 @@ public class PressTool {
     		costThreshold = conf.getInt("threshold");
     	}
     	
-    	RateLimiter limit = RateLimiter.create(qps);
+        boolean split = false;
+    	if (conf.has("split")) {
+    		split = conf.getBoolean("split");
+    	}
+    	
     	List<String> hosts = Splitter.on(',').omitEmptyStrings().splitToList(hostsStr);
     	List<String> queries = Files.readAllLines(Paths.get(rawInput));
+    	List<Integer> partitions = calcPartitions(split, queries.size(), threadNum);
     	
     	List<Future<PressStat>> futures = new ArrayList<>();
+    	RateLimiter limit = RateLimiter.create(qps);
     	ExecutorService service = Executors.newFixedThreadPool(threadNum);
     	for (int i = 0; i < threadNum; ++i) {
-    		Future<PressStat> future = service.submit(new HttpPressCall(limit, hosts, queries, totalCycles, costThreshold));
+    		List<String> subQueries = queries;
+    		if (split) {
+    			int fromIndex = partitions.get(i);
+    			int toIndex = partitions.get(i + 1);
+    			subQueries = queries.subList(fromIndex, toIndex);
+    		}
+    		Future<PressStat> future = service.submit(new HttpPressCall(limit, hosts, subQueries, totalCycles, costThreshold));
     		futures.add(future);
     	}
     	service.shutdown();
@@ -75,4 +88,18 @@ public class PressTool {
     	
     	System.out.println(fullStat);
     }
+
+	private static List<Integer> calcPartitions(boolean split, int size, int threadNum) {
+		if (!split) {
+			return Collections.emptyList();
+		}
+		int partSize = size / threadNum;
+		List<Integer> result = new ArrayList<Integer>();
+		result.add(0);
+		for (int i = 1; i < threadNum; ++i) {
+			result.add(i * partSize);
+		}
+		result.add(size);
+		return result;
+	}
 }
