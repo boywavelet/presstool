@@ -14,15 +14,16 @@ import org.apache.thrift.transport.TTransportException;
 import org.json.JSONObject;
 
 import com.google.common.util.concurrent.RateLimiter;
-import com.red.search.dejavu.thrift.DejavuService;
-import com.red.search.dejavu.thrift.SearchRequest;
-import com.red.search.dejavu.thrift.SearchResult;
+import com.red.search.dejavu.recall.thrift.DejavuRecallService;
+import com.red.search.dejavu.recall.thrift.SearchRequest;
+import com.red.search.dejavu.recall.thrift.SearchResult;
+import com.xiaohongshu.infra.rpc.base.Context;
 
 import perf.presstool.PressStat;
 
 public class DejavuRecallPressCall implements Callable<PressStat> {
 	private TTransport trans;
-	private DejavuService.Client client;
+	private DejavuRecallService.Client client;
 	
 	private RateLimiter limit;
 	private String host;
@@ -53,6 +54,7 @@ public class DejavuRecallPressCall implements Callable<PressStat> {
 		PressStat stat = new PressStat(threshold, pressCount);
 		Random rand = new Random();
 		
+		Context ctx = new Context();
 		for (int i = 0; i < pressCount; ++i) {
 			String query = queries.get(rand.nextInt(queries.size()));
 			SearchRequest request = createRequest(query);
@@ -60,8 +62,8 @@ public class DejavuRecallPressCall implements Callable<PressStat> {
 			limit.acquire();
 			long start = System.currentTimeMillis();
 			try {
-				DejavuService.Client client = getClient();
-				SearchResult result = client.search(request);
+				DejavuRecallService.Client client = getClient();
+				SearchResult result = client.search(ctx, request);
 				if (i == 0) {
 					System.out.println(result.getDocs());
 				}
@@ -90,14 +92,14 @@ public class DejavuRecallPressCall implements Callable<PressStat> {
 		return request;
 	}
 
-	private DejavuService.Client getClient() throws IOException {
+	private DejavuRecallService.Client getClient() throws IOException {
 		if (client == null) {
 			client = createClient(host, port);
 		}
 		return client;
 	}
 	
-	private DejavuService.Client createClient(String host, int port) throws IOException {
+	private DejavuRecallService.Client createClient(String host, int port) throws IOException {
 		trans = new TFramedTransport(new TSocket(host, port));
 		try {
 			trans.open();
@@ -107,7 +109,7 @@ public class DejavuRecallPressCall implements Callable<PressStat> {
 				return null;
 			}
 			TProtocol protocol = new TBinaryProtocol(trans);
-			return new DejavuService.Client(protocol);
+			return new DejavuRecallService.Client(protocol);
 		} catch (TTransportException e) {
 			throw new IOException(e);
 		} 

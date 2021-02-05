@@ -4,20 +4,20 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.red.search.dejavu.thrift;
+package com.red.search.dejavu.recall.thrift;
 
 @SuppressWarnings({"cast", "rawtypes", "serial", "unchecked", "unused"})
-public class DejavuService {
+public class DejavuRecallService {
 
   public interface Iface {
 
-    public SearchResult search(SearchRequest req) throws org.apache.thrift.TException;
+    public SearchResult search(com.xiaohongshu.infra.rpc.base.Context context, SearchRequest req) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void search(SearchRequest req, org.apache.thrift.async.AsyncMethodCallback<SearchResult> resultHandler) throws org.apache.thrift.TException;
+    public void search(com.xiaohongshu.infra.rpc.base.Context context, SearchRequest req, org.apache.thrift.async.AsyncMethodCallback<SearchResult> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -41,15 +41,16 @@ public class DejavuService {
       super(iprot, oprot);
     }
 
-    public SearchResult search(SearchRequest req) throws org.apache.thrift.TException
+    public SearchResult search(com.xiaohongshu.infra.rpc.base.Context context, SearchRequest req) throws org.apache.thrift.TException
     {
-      send_search(req);
+      send_search(context, req);
       return recv_search();
     }
 
-    public void send_search(SearchRequest req) throws org.apache.thrift.TException
+    public void send_search(com.xiaohongshu.infra.rpc.base.Context context, SearchRequest req) throws org.apache.thrift.TException
     {
       search_args args = new search_args();
+      args.setContext(context);
       args.setReq(req);
       sendBase("search", args);
     }
@@ -82,23 +83,26 @@ public class DejavuService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void search(SearchRequest req, org.apache.thrift.async.AsyncMethodCallback<SearchResult> resultHandler) throws org.apache.thrift.TException {
+    public void search(com.xiaohongshu.infra.rpc.base.Context context, SearchRequest req, org.apache.thrift.async.AsyncMethodCallback<SearchResult> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      search_call method_call = new search_call(req, resultHandler, this, ___protocolFactory, ___transport);
+      search_call method_call = new search_call(context, req, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class search_call extends org.apache.thrift.async.TAsyncMethodCall<SearchResult> {
+      private com.xiaohongshu.infra.rpc.base.Context context;
       private SearchRequest req;
-      public search_call(SearchRequest req, org.apache.thrift.async.AsyncMethodCallback<SearchResult> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public search_call(com.xiaohongshu.infra.rpc.base.Context context, SearchRequest req, org.apache.thrift.async.AsyncMethodCallback<SearchResult> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this.context = context;
         this.req = req;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("search", org.apache.thrift.protocol.TMessageType.CALL, 0));
         search_args args = new search_args();
+        args.setContext(context);
         args.setReq(req);
         args.write(prot);
         prot.writeMessageEnd();
@@ -151,7 +155,7 @@ public class DejavuService {
 
       public search_result getResult(I iface, search_args args) throws org.apache.thrift.TException {
         search_result result = new search_result();
-        result.success = iface.search(args.req);
+        result.success = iface.search(args.context, args.req);
         return result;
       }
     }
@@ -230,7 +234,7 @@ public class DejavuService {
       }
 
       public void start(I iface, search_args args, org.apache.thrift.async.AsyncMethodCallback<SearchResult> resultHandler) throws org.apache.thrift.TException {
-        iface.search(args.req,resultHandler);
+        iface.search(args.context, args.req,resultHandler);
       }
     }
 
@@ -239,16 +243,19 @@ public class DejavuService {
   public static class search_args implements org.apache.thrift.TBase<search_args, search_args._Fields>, java.io.Serializable, Cloneable, Comparable<search_args>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("search_args");
 
-    private static final org.apache.thrift.protocol.TField REQ_FIELD_DESC = new org.apache.thrift.protocol.TField("req", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField CONTEXT_FIELD_DESC = new org.apache.thrift.protocol.TField("context", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField REQ_FIELD_DESC = new org.apache.thrift.protocol.TField("req", org.apache.thrift.protocol.TType.STRUCT, (short)2);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new search_argsStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new search_argsTupleSchemeFactory();
 
+    public @org.apache.thrift.annotation.Nullable com.xiaohongshu.infra.rpc.base.Context context; // required
     public @org.apache.thrift.annotation.Nullable SearchRequest req; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      REQ((short)1, "req");
+      CONTEXT((short)1, "context"),
+      REQ((short)2, "req");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -264,7 +271,9 @@ public class DejavuService {
       @org.apache.thrift.annotation.Nullable
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // REQ
+          case 1: // CONTEXT
+            return CONTEXT;
+          case 2: // REQ
             return REQ;
           default:
             return null;
@@ -310,6 +319,8 @@ public class DejavuService {
     public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.CONTEXT, new org.apache.thrift.meta_data.FieldMetaData("context", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, com.xiaohongshu.infra.rpc.base.Context.class)));
       tmpMap.put(_Fields.REQ, new org.apache.thrift.meta_data.FieldMetaData("req", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SearchRequest.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
@@ -320,9 +331,11 @@ public class DejavuService {
     }
 
     public search_args(
+      com.xiaohongshu.infra.rpc.base.Context context,
       SearchRequest req)
     {
       this();
+      this.context = context;
       this.req = req;
     }
 
@@ -330,6 +343,9 @@ public class DejavuService {
      * Performs a deep copy on <i>other</i>.
      */
     public search_args(search_args other) {
+      if (other.isSetContext()) {
+        this.context = new com.xiaohongshu.infra.rpc.base.Context(other.context);
+      }
       if (other.isSetReq()) {
         this.req = new SearchRequest(other.req);
       }
@@ -341,7 +357,33 @@ public class DejavuService {
 
     @Override
     public void clear() {
+      this.context = null;
       this.req = null;
+    }
+
+    @org.apache.thrift.annotation.Nullable
+    public com.xiaohongshu.infra.rpc.base.Context getContext() {
+      return this.context;
+    }
+
+    public search_args setContext(@org.apache.thrift.annotation.Nullable com.xiaohongshu.infra.rpc.base.Context context) {
+      this.context = context;
+      return this;
+    }
+
+    public void unsetContext() {
+      this.context = null;
+    }
+
+    /** Returns true if field context is set (has been assigned a value) and false otherwise */
+    public boolean isSetContext() {
+      return this.context != null;
+    }
+
+    public void setContextIsSet(boolean value) {
+      if (!value) {
+        this.context = null;
+      }
     }
 
     @org.apache.thrift.annotation.Nullable
@@ -371,6 +413,14 @@ public class DejavuService {
 
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
+      case CONTEXT:
+        if (value == null) {
+          unsetContext();
+        } else {
+          setContext((com.xiaohongshu.infra.rpc.base.Context)value);
+        }
+        break;
+
       case REQ:
         if (value == null) {
           unsetReq();
@@ -385,6 +435,9 @@ public class DejavuService {
     @org.apache.thrift.annotation.Nullable
     public java.lang.Object getFieldValue(_Fields field) {
       switch (field) {
+      case CONTEXT:
+        return getContext();
+
       case REQ:
         return getReq();
 
@@ -399,6 +452,8 @@ public class DejavuService {
       }
 
       switch (field) {
+      case CONTEXT:
+        return isSetContext();
       case REQ:
         return isSetReq();
       }
@@ -420,6 +475,15 @@ public class DejavuService {
       if (this == that)
         return true;
 
+      boolean this_present_context = true && this.isSetContext();
+      boolean that_present_context = true && that.isSetContext();
+      if (this_present_context || that_present_context) {
+        if (!(this_present_context && that_present_context))
+          return false;
+        if (!this.context.equals(that.context))
+          return false;
+      }
+
       boolean this_present_req = true && this.isSetReq();
       boolean that_present_req = true && that.isSetReq();
       if (this_present_req || that_present_req) {
@@ -436,6 +500,10 @@ public class DejavuService {
     public int hashCode() {
       int hashCode = 1;
 
+      hashCode = hashCode * 8191 + ((isSetContext()) ? 131071 : 524287);
+      if (isSetContext())
+        hashCode = hashCode * 8191 + context.hashCode();
+
       hashCode = hashCode * 8191 + ((isSetReq()) ? 131071 : 524287);
       if (isSetReq())
         hashCode = hashCode * 8191 + req.hashCode();
@@ -451,6 +519,16 @@ public class DejavuService {
 
       int lastComparison = 0;
 
+      lastComparison = java.lang.Boolean.valueOf(isSetContext()).compareTo(other.isSetContext());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetContext()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.context, other.context);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       lastComparison = java.lang.Boolean.valueOf(isSetReq()).compareTo(other.isSetReq());
       if (lastComparison != 0) {
         return lastComparison;
@@ -482,6 +560,14 @@ public class DejavuService {
       java.lang.StringBuilder sb = new java.lang.StringBuilder("search_args(");
       boolean first = true;
 
+      sb.append("context:");
+      if (this.context == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.context);
+      }
+      first = false;
+      if (!first) sb.append(", ");
       sb.append("req:");
       if (this.req == null) {
         sb.append("null");
@@ -496,6 +582,9 @@ public class DejavuService {
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
       // check for sub-struct validity
+      if (context != null) {
+        context.validate();
+      }
       if (req != null) {
         req.validate();
       }
@@ -535,7 +624,16 @@ public class DejavuService {
             break;
           }
           switch (schemeField.id) {
-            case 1: // REQ
+            case 1: // CONTEXT
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.context = new com.xiaohongshu.infra.rpc.base.Context();
+                struct.context.read(iprot);
+                struct.setContextIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // REQ
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
                 struct.req = new SearchRequest();
                 struct.req.read(iprot);
@@ -559,6 +657,11 @@ public class DejavuService {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.context != null) {
+          oprot.writeFieldBegin(CONTEXT_FIELD_DESC);
+          struct.context.write(oprot);
+          oprot.writeFieldEnd();
+        }
         if (struct.req != null) {
           oprot.writeFieldBegin(REQ_FIELD_DESC);
           struct.req.write(oprot);
@@ -582,10 +685,16 @@ public class DejavuService {
       public void write(org.apache.thrift.protocol.TProtocol prot, search_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
         java.util.BitSet optionals = new java.util.BitSet();
-        if (struct.isSetReq()) {
+        if (struct.isSetContext()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetReq()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetContext()) {
+          struct.context.write(oprot);
+        }
         if (struct.isSetReq()) {
           struct.req.write(oprot);
         }
@@ -594,8 +703,13 @@ public class DejavuService {
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, search_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
+          struct.context = new com.xiaohongshu.infra.rpc.base.Context();
+          struct.context.read(iprot);
+          struct.setContextIsSet(true);
+        }
+        if (incoming.get(1)) {
           struct.req = new SearchRequest();
           struct.req.read(iprot);
           struct.setReqIsSet(true);

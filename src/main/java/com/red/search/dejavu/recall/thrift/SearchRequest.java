@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.red.search.dejavu.thrift;
+package com.red.search.dejavu.recall.thrift;
 
 @SuppressWarnings({"cast", "rawtypes", "serial", "unchecked", "unused"})
 public class SearchRequest implements org.apache.thrift.TBase<SearchRequest, SearchRequest._Fields>, java.io.Serializable, Cloneable, Comparable<SearchRequest> {

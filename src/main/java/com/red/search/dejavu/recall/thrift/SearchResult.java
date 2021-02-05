@@ -4,25 +4,28 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.red.search.dejavu.thrift;
+package com.red.search.dejavu.recall.thrift;
 
 @SuppressWarnings({"cast", "rawtypes", "serial", "unchecked", "unused"})
 public class SearchResult implements org.apache.thrift.TBase<SearchResult, SearchResult._Fields>, java.io.Serializable, Cloneable, Comparable<SearchResult> {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SearchResult");
 
-  private static final org.apache.thrift.protocol.TField DOCS_FIELD_DESC = new org.apache.thrift.protocol.TField("docs", org.apache.thrift.protocol.TType.LIST, (short)1);
-  private static final org.apache.thrift.protocol.TField ERROR_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("error_info", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField RES_FIELD_DESC = new org.apache.thrift.protocol.TField("res", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+  private static final org.apache.thrift.protocol.TField DOCS_FIELD_DESC = new org.apache.thrift.protocol.TField("docs", org.apache.thrift.protocol.TType.LIST, (short)2);
+  private static final org.apache.thrift.protocol.TField ERROR_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("error_info", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new SearchResultStandardSchemeFactory();
   private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new SearchResultTupleSchemeFactory();
 
+  public @org.apache.thrift.annotation.Nullable com.xiaohongshu.infra.rpc.base.Result res; // required
   public @org.apache.thrift.annotation.Nullable java.util.List<SearchResultDoc> docs; // required
   public @org.apache.thrift.annotation.Nullable java.lang.String error_info; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    DOCS((short)1, "docs"),
-    ERROR_INFO((short)2, "error_info");
+    RES((short)1, "res"),
+    DOCS((short)2, "docs"),
+    ERROR_INFO((short)3, "error_info");
 
     private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -38,9 +41,11 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
     @org.apache.thrift.annotation.Nullable
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // DOCS
+        case 1: // RES
+          return RES;
+        case 2: // DOCS
           return DOCS;
-        case 2: // ERROR_INFO
+        case 3: // ERROR_INFO
           return ERROR_INFO;
         default:
           return null;
@@ -86,6 +91,8 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
   public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.RES, new org.apache.thrift.meta_data.FieldMetaData("res", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, com.xiaohongshu.infra.rpc.base.Result.class)));
     tmpMap.put(_Fields.DOCS, new org.apache.thrift.meta_data.FieldMetaData("docs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SearchResultDoc.class))));
@@ -99,10 +106,12 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
   }
 
   public SearchResult(
+    com.xiaohongshu.infra.rpc.base.Result res,
     java.util.List<SearchResultDoc> docs,
     java.lang.String error_info)
   {
     this();
+    this.res = res;
     this.docs = docs;
     this.error_info = error_info;
   }
@@ -111,6 +120,9 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
    * Performs a deep copy on <i>other</i>.
    */
   public SearchResult(SearchResult other) {
+    if (other.isSetRes()) {
+      this.res = new com.xiaohongshu.infra.rpc.base.Result(other.res);
+    }
     if (other.isSetDocs()) {
       java.util.List<SearchResultDoc> __this__docs = new java.util.ArrayList<SearchResultDoc>(other.docs.size());
       for (SearchResultDoc other_element : other.docs) {
@@ -129,8 +141,34 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
 
   @Override
   public void clear() {
+    this.res = null;
     this.docs = null;
     this.error_info = null;
+  }
+
+  @org.apache.thrift.annotation.Nullable
+  public com.xiaohongshu.infra.rpc.base.Result getRes() {
+    return this.res;
+  }
+
+  public SearchResult setRes(@org.apache.thrift.annotation.Nullable com.xiaohongshu.infra.rpc.base.Result res) {
+    this.res = res;
+    return this;
+  }
+
+  public void unsetRes() {
+    this.res = null;
+  }
+
+  /** Returns true if field res is set (has been assigned a value) and false otherwise */
+  public boolean isSetRes() {
+    return this.res != null;
+  }
+
+  public void setResIsSet(boolean value) {
+    if (!value) {
+      this.res = null;
+    }
   }
 
   public int getDocsSize() {
@@ -201,6 +239,14 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
 
   public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
     switch (field) {
+    case RES:
+      if (value == null) {
+        unsetRes();
+      } else {
+        setRes((com.xiaohongshu.infra.rpc.base.Result)value);
+      }
+      break;
+
     case DOCS:
       if (value == null) {
         unsetDocs();
@@ -223,6 +269,9 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
   @org.apache.thrift.annotation.Nullable
   public java.lang.Object getFieldValue(_Fields field) {
     switch (field) {
+    case RES:
+      return getRes();
+
     case DOCS:
       return getDocs();
 
@@ -240,6 +289,8 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
     }
 
     switch (field) {
+    case RES:
+      return isSetRes();
     case DOCS:
       return isSetDocs();
     case ERROR_INFO:
@@ -262,6 +313,15 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
       return false;
     if (this == that)
       return true;
+
+    boolean this_present_res = true && this.isSetRes();
+    boolean that_present_res = true && that.isSetRes();
+    if (this_present_res || that_present_res) {
+      if (!(this_present_res && that_present_res))
+        return false;
+      if (!this.res.equals(that.res))
+        return false;
+    }
 
     boolean this_present_docs = true && this.isSetDocs();
     boolean that_present_docs = true && that.isSetDocs();
@@ -288,6 +348,10 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
   public int hashCode() {
     int hashCode = 1;
 
+    hashCode = hashCode * 8191 + ((isSetRes()) ? 131071 : 524287);
+    if (isSetRes())
+      hashCode = hashCode * 8191 + res.hashCode();
+
     hashCode = hashCode * 8191 + ((isSetDocs()) ? 131071 : 524287);
     if (isSetDocs())
       hashCode = hashCode * 8191 + docs.hashCode();
@@ -307,6 +371,16 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
 
     int lastComparison = 0;
 
+    lastComparison = java.lang.Boolean.valueOf(isSetRes()).compareTo(other.isSetRes());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetRes()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.res, other.res);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = java.lang.Boolean.valueOf(isSetDocs()).compareTo(other.isSetDocs());
     if (lastComparison != 0) {
       return lastComparison;
@@ -348,6 +422,14 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
     java.lang.StringBuilder sb = new java.lang.StringBuilder("SearchResult(");
     boolean first = true;
 
+    sb.append("res:");
+    if (this.res == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.res);
+    }
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("docs:");
     if (this.docs == null) {
       sb.append("null");
@@ -370,6 +452,9 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // check for sub-struct validity
+    if (res != null) {
+      res.validate();
+    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -406,7 +491,16 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
           break;
         }
         switch (schemeField.id) {
-          case 1: // DOCS
+          case 1: // RES
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+              struct.res = new com.xiaohongshu.infra.rpc.base.Result();
+              struct.res.read(iprot);
+              struct.setResIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 2: // DOCS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
@@ -425,7 +519,7 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 2: // ERROR_INFO
+          case 3: // ERROR_INFO
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
               struct.error_info = iprot.readString();
               struct.setError_infoIsSet(true);
@@ -448,6 +542,11 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      if (struct.res != null) {
+        oprot.writeFieldBegin(RES_FIELD_DESC);
+        struct.res.write(oprot);
+        oprot.writeFieldEnd();
+      }
       if (struct.docs != null) {
         oprot.writeFieldBegin(DOCS_FIELD_DESC);
         {
@@ -483,13 +582,19 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
     public void write(org.apache.thrift.protocol.TProtocol prot, SearchResult struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
       java.util.BitSet optionals = new java.util.BitSet();
-      if (struct.isSetDocs()) {
+      if (struct.isSetRes()) {
         optionals.set(0);
       }
-      if (struct.isSetError_info()) {
+      if (struct.isSetDocs()) {
         optionals.set(1);
       }
-      oprot.writeBitSet(optionals, 2);
+      if (struct.isSetError_info()) {
+        optionals.set(2);
+      }
+      oprot.writeBitSet(optionals, 3);
+      if (struct.isSetRes()) {
+        struct.res.write(oprot);
+      }
       if (struct.isSetDocs()) {
         {
           oprot.writeI32(struct.docs.size());
@@ -507,8 +612,13 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, SearchResult struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-      java.util.BitSet incoming = iprot.readBitSet(2);
+      java.util.BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
+        struct.res = new com.xiaohongshu.infra.rpc.base.Result();
+        struct.res.read(iprot);
+        struct.setResIsSet(true);
+      }
+      if (incoming.get(1)) {
         {
           org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
           struct.docs = new java.util.ArrayList<SearchResultDoc>(_list5.size);
@@ -522,7 +632,7 @@ public class SearchResult implements org.apache.thrift.TBase<SearchResult, Searc
         }
         struct.setDocsIsSet(true);
       }
-      if (incoming.get(1)) {
+      if (incoming.get(2)) {
         struct.error_info = iprot.readString();
         struct.setError_infoIsSet(true);
       }
