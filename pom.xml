@@ -75,9 +75,15 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.red.search</groupId>
-			<artifactId>analyzer</artifactId>
-			<version>1.0</version>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>6.5.4</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-smartcn</artifactId>
+			<version>7.5.0</version>
 		</dependency>
 		
 		<dependency>
