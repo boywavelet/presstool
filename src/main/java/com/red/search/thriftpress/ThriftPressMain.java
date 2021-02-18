@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -35,6 +36,10 @@ public class ThriftPressMain {
     	
     	JSONObject conf = parseConfig(args[0]);
     	int qps = conf.getInt("qps");
+    	int warmUpSeconds = 0;
+    	if (conf.has("warm_up")) {
+    		warmUpSeconds = conf.getInt("warm_up");
+    	}
     	int threadNum = conf.getInt("thread_num");
     	
     	String rawInput = conf.getString("input");
@@ -56,7 +61,7 @@ public class ThriftPressMain {
     	List<String> queries = Files.readAllLines(Paths.get(rawInput));
     	
     	List<Future<PressStat>> futures = new ArrayList<>();
-    	RateLimiter limit = RateLimiter.create(qps);
+    	RateLimiter limit = RateLimiter.create(qps, warmUpSeconds, TimeUnit.SECONDS);
     	ExecutorService service = Executors.newFixedThreadPool(threadNum);
     	for (int i = 0; i < threadNum; ++i) {
     		Future<PressStat> future;
