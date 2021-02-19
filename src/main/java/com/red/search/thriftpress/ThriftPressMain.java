@@ -72,6 +72,9 @@ public class ThriftPressMain {
     		case "dejavu_recall":
     			future = service.submit(new DejavuRecallPressCall(limit, host, port, costThreshold, queries, serverConf));
     			break;
+    		case "dejavu_relevance":
+    			future = service.submit(new DejavuRelevancePressCall(limit, host, port, costThreshold, queries, serverConf));
+				break;
     		default:
     			System.out.println("unknown server name, exit");
     			return;
