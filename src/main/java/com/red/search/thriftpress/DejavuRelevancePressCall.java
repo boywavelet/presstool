@@ -86,17 +86,20 @@ public class DejavuRelevancePressCall implements Callable<PressStat> {
 		GBDTRequest request = new GBDTRequest();
 		request.terms = new ArrayList<>();
 		Term term1 = new Term();
-		term1.name = "衬衫";
+		term1.name = "意面";
 		request.terms.add(term1);
 		Term term2 = new Term();
-		term2.name = "非常";
+		term2.name = "煲仔饭";
 		request.terms.add(term2);
 		request.request_id = "abc";
 		request.source = this.source;
 		request.model = "default";
 		request.ids = new ArrayList<>();
-		for (int i = 0; i < 1000; i++) {
-			request.ids.add("5f34d4f0000000000100008a");
+		for (int i = 0; i < 500; i++) {
+			request.ids.add("5faced92000000000100aecc");
+		}
+		for (int i = 500; i < 1000; i++) {
+			request.ids.add("5fdfed0200000000010097a6");
 		}
 		return request;
 	}
