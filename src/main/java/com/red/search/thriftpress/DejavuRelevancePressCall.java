@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
+import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TJSONProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TFramedTransport;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TTransportException;
+import org.apache.thrift.transport.*;
 import org.json.JSONObject;
 
 import com.google.common.util.concurrent.RateLimiter;
@@ -82,25 +81,12 @@ public class DejavuRelevancePressCall implements Callable<PressStat> {
 		return stat;
 	}
 	
-	private GBDTRequest createRequest(String query) {
+	private GBDTRequest createRequest(String query) throws TException {
 		GBDTRequest request = new GBDTRequest();
-		request.terms = new ArrayList<>();
-		Term term1 = new Term();
-		term1.name = "意面";
-		request.terms.add(term1);
-		Term term2 = new Term();
-		term2.name = "煲仔饭";
-		request.terms.add(term2);
-		request.request_id = "abc";
-		request.source = this.source;
-		request.model = "default";
-		request.ids = new ArrayList<>();
-		for (int i = 0; i < 500; i++) {
-			request.ids.add("5faced92000000000100aecc");
-		}
-		for (int i = 500; i < 1000; i++) {
-			request.ids.add("5fdfed0200000000010097a6");
-		}
+		TMemoryBuffer buffer = new TMemoryBuffer(32);
+		buffer.write(query.getBytes());
+		TProtocol protocol = new TJSONProtocol(buffer);
+        request.read(protocol);
 		return request;
 	}
 
