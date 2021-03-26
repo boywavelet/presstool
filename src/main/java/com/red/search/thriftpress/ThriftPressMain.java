@@ -48,6 +48,9 @@ public class ThriftPressMain {
     	if (conf.has("threshold")) {
     		costThreshold = conf.getInt("threshold");
     	}
+    	if (conf.has("warn_threshold")) {
+    		PressStat.WARN_THRESHOLD = conf.getInt("warn_threshold");
+    	}
     	int port = 19090;
     	if (conf.has("port")) {
     		port = conf.getInt("port");

@@ -76,8 +76,7 @@ public class DejavuRecallPressCall implements Callable<PressStat> {
 			}
 			
 			long end = System.currentTimeMillis();
-			stat.collect((int)(end - start));
-			
+			stat.collect(query, (int)(end - start));
 		}
 		return stat;
 	}

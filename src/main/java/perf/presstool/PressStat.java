@@ -1,10 +1,12 @@
 package perf.presstool;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class PressStat {
 
+	public static Integer WARN_THRESHOLD = 1000;
 	private Map<Integer, Integer> countMap = new TreeMap<Integer, Integer>();
 	private int threshold = Integer.MAX_VALUE;
 	private int count = 0;
@@ -24,9 +26,16 @@ public class PressStat {
 	}
 	
 	public void collect(int value) {
+		collect("", value);
+	}
+	public void collect(String query, int value) {
 		++warmed;
 		if (warmed <= warmUp) {
 			return;
+		}
+		
+		if (value > WARN_THRESHOLD) {
+			System.out.println("WARN##" + new Date() + "##" + query + "##" + value);
 		}
 		
 		++count;
