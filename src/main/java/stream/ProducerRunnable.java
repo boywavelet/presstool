@@ -81,7 +81,7 @@ public class ProducerRunnable implements Runnable {
 	    int a = 63689;
 	    int hash = 0;
 
-	    for(int i = 0; i < id.length(); i++) {
+	    for(int i = 0; i < id.length() - 1; i++) {
 	        hash = hash * a + (int)id.charAt(i);
 	        a *= b;
 	    }
